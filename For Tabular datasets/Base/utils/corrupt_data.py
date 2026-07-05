@@ -5,7 +5,7 @@ import os
 
 
 def add_gaussian_noise(features_df, num_points_to_corrupt, std_dev=0.3):
-    features = features_df.values  # Convert DataFrame to numpy array
+    features = features_df.values.copy()  # Convert DataFrame to numpy array copy to make it writable
     noise = np.random.normal(0, std_dev, (num_points_to_corrupt, features.shape[1]))
     corrupt_indices = np.random.choice(features.shape[0], num_points_to_corrupt, replace=False)
     features[corrupt_indices] += noise
@@ -13,12 +13,13 @@ def add_gaussian_noise(features_df, num_points_to_corrupt, std_dev=0.3):
     return pd.DataFrame(features, columns=features_df.columns, index=features_df.index)
 
 def flip_labels(labels, num_points_to_flip):
+    labels = np.array(labels, copy=True)  # Make a writable copy
     flip_indices = np.random.choice(len(labels), num_points_to_flip, replace=False)
     labels[flip_indices] = 1 - labels[flip_indices]  # Flip 0 to 1 and 1 to 0
     return labels
 
 def introduce_outliers(features_df, num_samples_to_corrupt, fraction_of_features=0.3):
-    features = features_df.values  # Convert DataFrame to numpy array
+    features = features_df.values.copy()  # Convert DataFrame to numpy array copy to make it writable
     num_samples, num_features = features.shape
     sample_indices = np.random.choice(num_samples, num_samples_to_corrupt, replace=False)
 
@@ -60,8 +61,8 @@ def apply_noise_to_selected_clients(train_data_list, dataset):
 
     for i in client_set:
         df = modified_train_data_list[i]
-        features = df.iloc[:, :-1]  # All columns except last (labels)
-        labels = df.iloc[:, -1].values  # Last column as numpy array
+        features = df.iloc[:, :-1].copy()  # All columns except last (labels)
+        labels = df.iloc[:, -1].values.copy()  # Last column as numpy array
         
         if noise_type_list[i] == 'gaussian':
             num_points_to_corrupt = int(percentage_of_corrupt * features.shape[0])

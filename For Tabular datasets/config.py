@@ -1,4 +1,4 @@
-SEED = 1234
+SEED = 42
 
 ''''Federated Learning general settings'''
 num_clients = 100
@@ -20,15 +20,16 @@ corrupted_clients = num_clients#//2
 mu = 0.1  # Proximal term coefficient for FedProx
 alpha_coef = 0.1  # Regularization coefficient for FedDyn
 
-dataset_path = "/Users/mlsilab/Documents/Shuvo/datasets/binary/"
+
+dataset_path = "./datasets/"
 
 one_zero_dataset = ['A9a','phishing', '2dplanes', 'adult']    # "qsar_oral_toxicity",
 continuous_datasets = ['magic_gamma_telescope','fried', 'Run_or_walk_information','skin_nonskin','hepmass', 'higgs','susy']
 new_datasets = ['Default of Credit Card Clients']
 # all_datasets = one_zero_dataset + continuous_datasets
 # all_datasets = ['adult','2dplanes','fried','hepmass','magic_gamma_telescope','phishing']
-all_datasets = ['magic_gamma_telescope','A9a', 'Run_or_walk_information','hepmass','susy']
-# all_datasets = ['hepmass']
+# all_datasets = ['magic_gamma_telescope','A9a', 'Run_or_walk_information','hepmass','susy']
+all_datasets = ['Run_or_walk_information']
 
 
 """List of aggregations to be used in the simulation

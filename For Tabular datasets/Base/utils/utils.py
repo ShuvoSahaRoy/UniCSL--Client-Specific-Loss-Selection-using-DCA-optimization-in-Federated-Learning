@@ -99,8 +99,8 @@ def load_lr_rate(dataset, algorithm, non_iid, filename="lr_rate.xlsx"):
 def noniid_distribution(data):
     total_samples = len(data)
     labels = data.iloc[:, -1]
-    class_0_indices = data[labels == 0].index.to_numpy()
-    class_1_indices = data[labels == 1].index.to_numpy()
+    class_0_indices = data[labels == 0].index.to_numpy().copy()
+    class_1_indices = data[labels == 1].index.to_numpy().copy()
     np.random.shuffle(class_0_indices)
     np.random.shuffle(class_1_indices)
 
@@ -243,11 +243,11 @@ def iid_distribution(data):
     
     # Split each class's data into num_clients parts
     for _, group in grouped:
-        # Split the group's rows into num_clients parts
-        splits = np.array_split(group, num_clients)
+        # Split the group's indices into num_clients parts
+        split_indices = np.array_split(group.index, num_clients)
         # Append each split to the corresponding client's dataset
-        for i, split in enumerate(splits):
-            client_datasets[i].append(split)
+        for i, indices in enumerate(split_indices):
+            client_datasets[i].append(group.loc[indices])
     
     # Concatenate each client's splits into a single DataFrame
     client_datasets = [pd.concat(splits, ignore_index=True) for splits in client_datasets]

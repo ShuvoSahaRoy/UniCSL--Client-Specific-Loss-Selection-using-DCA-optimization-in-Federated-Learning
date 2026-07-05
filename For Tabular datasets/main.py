@@ -33,7 +33,6 @@ import time
 
 set_seed()
 log_file, tee = setup_logger(save_log=save_log)
-lr_df = pd.read_excel(r"lr_rate.xlsx")
 
 client_schedule = [np.random.choice(num_clients, size=participants, replace=False) for _ in range(CR)]
 
@@ -45,10 +44,13 @@ for dataset in all_datasets:
 
         # -----------------------------------------
         if aggregation != "unicsl_static":
-            lr = load_lr_rate(dataset, aggregation, non_iid)
-            print(f"lr rate for {dataset} in {aggregation} = {lr}")
-            print(f"current lr {lr}")
-        # lr = 0.1
+            try:
+                lr = load_lr_rate(dataset, aggregation, non_iid)
+                print(f"lr rate for {dataset} in {aggregation} = {lr}")
+                print(f"current lr {lr}")
+            except:
+                print(f"lr rate for {dataset} in {aggregation} not found. Using default lr = 0.1")
+                lr = 0.1
         start_time = time.time()
         
         if aggregation == 'fedavg':
