@@ -56,11 +56,13 @@ for dataset in all_datasets:
             continue  # skip — this algorithm runs in its own process
 
         if aggregation != "unicsl_static":
-            lr = load_lr_rate(dataset, aggregation, non_iid)
-            print(f"lr rate for {dataset} in {aggregation} = {lr}")
+            # lr = load_lr_rate(dataset, aggregation, non_iid)
+            # print(f"lr rate for {dataset} in {aggregation} = {lr}")
+            lr = 0.1
         else:
             # for unicsl you can keep c as low as 0.01 for all datasets, it doesn't have a significant impact on performance, but you can also tune it for better results. We have provided the best c values we found for each dataset in 'c_rate.xlsx'.
-            c, _ = load_best_c('c_rate.xlsx',SEED, dataset, non_iid, corrupt_data)
+            # c, _ = load_best_c('c_rate.xlsx',SEED, dataset, non_iid, corrupt_data)
+            c = 0.01
 
         if aggregation == 'fedavg':
             fedavg_acc = main_fedavg(copy.deepcopy(global_parameters), copy.deepcopy(train_data_list), copy.deepcopy(global_test_data), client_schedule, lr)
