@@ -85,21 +85,21 @@ def calculate_inverse_ovo(train_data_list, num_classes,c):
 # global_parameters.copy(), client_data, test_data[1], client_Q_QXT[client],loss_dictionary[client]
 def client_update(global_weights, data, client_Q_QXT, loss,val_data):
     if loss['best_loss'] is None:
-        # best_f1 = -1
-        best_accuracy = -1
+        best_f1 = -1
+        # best_accuracy = -1
         for loss in loss_functions:
             w, no_of_sample = train(global_weights.copy(), data, client_Q_QXT, loss)
             accuracy, f1 = test(w, val_data)
 
-            # if f1 > best_f1: 
-            #     best_f1 = f1
-            #     best_w = w
-            #     best_loss = loss
-
-            if accuracy > best_accuracy:
-                best_accuracy = accuracy
+            if f1 > best_f1: 
+                best_f1 = f1
                 best_w = w
                 best_loss = loss
+
+            # if accuracy > best_accuracy:
+            #     best_accuracy = accuracy
+            #     best_w = w
+            #     best_loss = loss
 
         # del_w = global_weights - best_w
         local_weights = best_w
